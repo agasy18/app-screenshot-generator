@@ -1,6 +1,3 @@
-Here's a README template for your project, which seems to focus on resizing and filling screenshots to specified dimensions, supporting multiple sizes and formats. You can customize this README to better fit the specifics of your project and its usage.
-
----
 
 # App Screenshot Generator
 
