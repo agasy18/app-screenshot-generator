@@ -6,13 +6,13 @@ parser = ArgumentParser()
 parser.add_argument('--screenshots', type=str, default='screenshots')
 parser.add_argument('--output', type=str, default='output')
 parser.add_argument('--sizes', type=str, action='append', default=[
-    'phone6.5=1284x2778',
+    'phone6.7=1290x2796',
     'phone5.5=1242x2208',
-    'ipad6=2048x2732,2732x2048',
+    'ipad6=2732x2048',
 ])
 parser.add_argument('--fill_color', type=str, default='auto', help='auto, srgb(255,255,255), #ffffff, white, etc.')
 parser.add_argument('--auto_color_pixel', type=str, default='1,1')
-parser.add_argument('--supported_formats', type=str, action='append', default='png,jpg')
+parser.add_argument('--supported_formats', type=str, action='append', default='png,jpg,jpeg')
 
 
 def parse_sizes(sizes):
