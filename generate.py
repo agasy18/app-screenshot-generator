@@ -28,9 +28,8 @@ def get_screenshots(screenshots, supported_formats):
     return list(filter(lambda x: x.split('.')[-1].lower() in supported_formats, os.listdir(screenshots)))
 
 
-def generate(screenshot, size, dimension, args):
-    input_path = os.path.join(args.screenshots, screenshot)
-    output_path = os.path.join(args.output, size, screenshot.replace('.', f'_{dimension[0]}x{dimension[1]}.'))
+def generate(screenshot, size, dimension, input_path, output_root, args):
+    output_path = os.path.join(output_root, size, screenshot.replace('.', f'_{dimension[0]}x{dimension[1]}.'))
     print(f'Generating {output_path}')
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     if args.fill_color == 'auto':
@@ -56,18 +55,30 @@ def generate(screenshot, size, dimension, args):
 
 def main(args):
     print(f'Generating screenshots from {args.screenshots} to {args.output}')
-    check_call(['rm', '-r', args.output])
+    if args.screenshots == args.output:
+        print('Input and output directories are the same. Will remove output directory')
+        return
+    check_call(['rm', '-rf', args.output])
+
     sizes = parse_sizes(args.sizes)
     print(f'Using sizes: {sizes}')
-    screenshots = get_screenshots(args.screenshots, args.supported_formats.split(','))
-    print(f'Found screenshots: {screenshots}')
-    for screenshot in screenshots:
-        print(f'Generating {screenshot}')
-        for size, dimensions in sizes.items():
-            print(f'Generating {size}')
-            for dimension in dimensions:
-                print(f'Generating {dimension}')
-                generate(screenshot, size, dimension, args)
+    os.walk(args.screenshots)
+
+    for dirpath, dirnames, filenames in os.walk(args.screenshots):
+        print(f'Processing {dirpath}')
+
+        screenshots = get_screenshots(dirpath, args.supported_formats.split(','))
+        output_dir = os.path.join(args.output, os.path.relpath(dirpath, args.screenshots))
+        print(f'Found screenshots: {screenshots}')
+        for screenshot in screenshots:
+            print(f'Generating {screenshot}')
+            for size, dimensions in sizes.items():
+                print(f'Generating {size}')
+                for dimension in dimensions:
+                    print(f'Generating {dimension}')
+                    input_path = os.path.join(dirpath, screenshot)
+                    generate(screenshot, size, dimension, input_path, output_dir, args)
+                   
 
 if __name__ == '__main__':
     args = parser.parse_args()
