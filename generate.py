@@ -8,7 +8,7 @@ parser.add_argument('--output', type=str, default='output')
 parser.add_argument('--sizes', type=str, action='append', default=[
     'phone6.7=1290x2796',
     'phone5.5=1242x2208',
-    'ipad6=2732x2048',
+    'ipad6=2048x2732',
     'android_9_16=2160x3840',
 ])
 parser.add_argument('--fill_color', type=str, default='auto', help='auto, srgb(255,255,255), #ffffff, white, etc.')
